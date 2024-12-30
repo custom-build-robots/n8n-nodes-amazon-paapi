@@ -135,6 +135,10 @@ export class AmazonPA implements INodeType {
 
                     if (itemIds) {
                         requestParameters.ItemIds = itemIds.includes(',') ? itemIds.split(',') : [itemIds];
+                        requestParameters.Resources = [
+                            'ItemInfo.Title',
+                            'Offers.Listings.Price' // Add this line to get the price
+                        ];
                     } else {
                         throw new Error('Item IDs are required but were not provided.');
                     }

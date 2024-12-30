@@ -1,21 +1,21 @@
 {
-  "name": "n8n-nodes-amazon-paapi",
-  "version": "0.0.10",
-  "description": "n8n node for Amazon Affiliate API (PA API)",
+  "name": "n8n-nodes-amazon-paapi-price",
+  "version": "0.0.12",
+  "description": "n8n node for Amazon Affiliate API (PA API) with price functionality",
   "keywords": [
     "n8n-community-node-package",
     "amazon",
     "affiliate"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/ofekb/n8n-nodes-amazon-paapi",
+  "homepage": "https://github.com/almirribeiro/n8n-nodes-amazon-paapi",
   "author": {
-    "name": "Ofek",
-    "telegram": "@AppDev420"
+    "name": "Almir Ribeiro",
+    "email": "seuemail@example.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ofekb/n8n-nodes-amazon-paapi.git"
+    "url": "https://github.com/almirribeiro/n8n-nodes-amazon-paapi.git"
   },
   "main": "nodes/AmazonPA/AmazonPA.node.js",
   "scripts": {
