@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-amazon-paapi-price",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "n8n node for Amazon Affiliate API (PA API) with price functionality",
   "keywords": [
     "n8n-community-node-package",
@@ -11,7 +11,7 @@
   "homepage": "https://github.com/almirribeiro/n8n-nodes-amazon-paapi",
   "author": {
     "name": "Almir Ribeiro",
-    "email": "seuemail@example.com"
+    "email": "almirribeiro@gmail.com"
   },
   "repository": {
     "type": "git",
