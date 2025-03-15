@@ -17,7 +17,7 @@ export class AmazonPA implements INodeType {
         subtitle: '={{$parameter["operation"]}}',
         description: 'Interact with Amazon Product Advertising API',
         defaults: {
-            name: 'Amazon PA API',
+            name: 'Amazon PA API - IGI',
             color: '#FF9900',
         },
         inputs: ['main'],
@@ -181,9 +181,9 @@ export class AmazonPA implements INodeType {
                 // Log error and continue
                 console.error('API Request Error:', error);
                 if (error instanceof Error) {
-                    throw new Error(`Failed to execute Amazon PA API operation: ${error.message}`);
+                    throw new Error(`Failed to execute Amazon PA API - IGI operation: ${error.message}`);
                 } else {
-                    throw new Error('Failed to execute Amazon PA API operation due to an unknown error.');
+                    throw new Error('Failed to execute Amazon PA API - IGI operation due to an unknown error.');
                 }
             }
         }
