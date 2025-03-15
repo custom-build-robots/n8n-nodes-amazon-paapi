@@ -9,7 +9,7 @@ import * as amazonPaapi from 'amazon-paapi';
 
 export class AmazonPA implements INodeType {
     description: INodeTypeDescription = {
-        displayName: 'Amazon PA API',
+        displayName: 'Amazon PA API - IGI',
         name: 'amazonPA',
         icon: 'file:amazon.svg',
         group: ['transform'],
