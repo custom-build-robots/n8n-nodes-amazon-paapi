@@ -137,7 +137,10 @@ export class AmazonPA implements INodeType {
                         requestParameters.ItemIds = itemIds.includes(',') ? itemIds.split(',') : [itemIds];
                         requestParameters.Resources = [
                             'ItemInfo.Title',
-                            'Offers.Listings.Price' // Add this line to get the price
+                            'Offers.Listings.Price', // Add this line to get the price
+                            'Images.Primary.Small', // Returns large-sized small image (https://webservices.amazon.com/paapi5/documentation/get-items.html)
+                            'Images.Primary.Medium', // Returns large-sized medium image
+                            'Images.Primary.Large' // Returns large-sized primary image
                         ];
                     } else {
                         throw new Error('Item IDs are required but were not provided.');
