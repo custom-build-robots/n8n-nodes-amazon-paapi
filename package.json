@@ -1,9 +1,9 @@
 {
-  "name": "n8n-nodes-amazon-paapi-price",
+  "name": "n8n-nodes-amazon-paapi-adv",
   "version": "0.0.13.1",
-  "description": "n8n node for Amazon Affiliate API (PA API) with price functionality and product images",
+  "description": "n8n node for Amazon Affiliate API (PA API) advanced with price functionality and product images",
   "keywords": [
-    "n8n-community-node-package",
+    "n8n-community-node-package-adv",
     "amazon",
     "affiliate"
   ],
