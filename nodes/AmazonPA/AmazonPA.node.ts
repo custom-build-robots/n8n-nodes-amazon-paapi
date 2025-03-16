@@ -83,6 +83,29 @@ export class AmazonPA implements INodeType {
                 default: '',
                 description: 'Keywords to search for items on Amazon',
             },
+
+            // Add SearchIndex definition here
+            {
+                displayName: 'Categories (Search Index)',
+                name: 'searchIndex',
+                type: 'multiOptions',  // Allows selecting multiple categories
+                options: [
+                    { name: 'Books', value: 'Books' },
+                    { name: 'Toys & Games', value: 'ToysAndGames' },
+                    { name: 'Electronics', value: 'Electronics' },
+                    { name: 'Health & Personal Care', value: 'HealthPersonalCare' },
+                    { name: 'Beauty', value: 'Beauty' },
+                    { name: 'Clothing & Accessories', value: 'Apparel' },
+                ],
+                displayOptions: {
+                    show: {
+                        operation: ['searchItems'],
+                    },
+                },
+                default: [],
+                description: 'Select one or more categories for product search.',
+            },
+            
             {
                 displayName: 'Browse Node IDs (for Get Browse Nodes)',
                 name: 'browseNodeIds',
@@ -156,9 +179,37 @@ export class AmazonPA implements INodeType {
                     }
                 } else if (operation === 'searchItems') {
                     // Handling Search Items request
+                    //const keywords = this.getNodeParameter('keywords', i) as string;
+                    //requestParameters.Keywords = keywords;
+                    //responseData = await amazonPaapi.SearchItems(commonParameters, requestParameters);
+                    
+                    // Handling Search Items request
                     const keywords = this.getNodeParameter('keywords', i) as string;
-                    requestParameters.Keywords = keywords;
-                    responseData = await amazonPaapi.SearchItems(commonParameters, requestParameters);
+                    const searchIndexes = this.getNodeParameter('searchIndex', i, []) as string[]; // Multi-option array
+                    let allResults: any[] = [];
+                
+                    for (const searchIndex of searchIndexes) {
+                        const requestParameters: any = {
+                            Keywords: keywords,
+                            SearchIndex: searchIndex,
+                        };
+                
+                        console.log(`Requesting category: ${searchIndex}`);
+                        const responseData = await amazonPaapi.SearchItems(commonParameters, requestParameters);
+                
+                        // Merge results from each category
+                        if (responseData?.body?.SearchResult?.Items) {
+                            allResults = allResults.concat(responseData.body.SearchResult.Items);
+                        }
+                    }
+                
+                    returnData.push({ json: { results: allResults } });
+
+                
+                
+                
+                
+                
                 } else if (operation === 'getBrowseNodes') {
                     // Handling Get Browse Nodes request
                     const browseNodeIds = this.getNodeParameter('browseNodeIds', i) as string | null;
