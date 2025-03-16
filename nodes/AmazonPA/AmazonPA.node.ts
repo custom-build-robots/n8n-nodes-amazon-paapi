@@ -7,6 +7,10 @@ import {
 
 import * as amazonPaapi from 'amazon-paapi';
 
+function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export class AmazonPA implements INodeType {
     description: INodeTypeDescription = {
         displayName: 'Amazon PA API Advanced',
@@ -195,12 +199,19 @@ export class AmazonPA implements INodeType {
                         };
                 
                         console.log(`Requesting category: ${searchIndex}`);
-                        const responseData = await amazonPaapi.SearchItems(commonParameters, requestParameters);
                 
-                        // Merge results from each category
-                        if (responseData?.body?.SearchResult?.Items) {
-                            allResults = allResults.concat(responseData.body.SearchResult.Items);
+                        try {
+                            const responseData = await amazonPaapi.SearchItems(commonParameters, requestParameters);
+                
+                            if (responseData?.body?.SearchResult?.Items) {
+                                allResults = allResults.concat(responseData.body.SearchResult.Items);
+                            }
+                        } catch (error) {
+                            console.error(`Error searching category "${searchIndex}":`, error);
                         }
+                
+                        // **Prevent API throttling by adding a delay**
+                        await sleep(1000); // Wait 1 second before making the next request
                     }
                 
                     returnData.push({ json: { results: allResults } });
