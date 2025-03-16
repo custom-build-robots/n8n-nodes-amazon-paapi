@@ -9,13 +9,13 @@ import * as amazonPaapi from 'amazon-paapi';
 
 export class AmazonPA implements INodeType {
     description: INodeTypeDescription = {
-        displayName: 'Amazon PA API',
-        name: 'amazonPA',
+        displayName: 'Amazon PA API Advanced',
+        name: 'amazonPaApiAdv',
         icon: 'file:amazon.svg',
         group: ['transform'],
         version: 1,
         subtitle: '={{$parameter["operation"]}}',
-        description: 'Interact with Amazon Product Advertising API',
+        description: 'Advanced Amazon Product Advertising API Integration for n8n',
         defaults: {
             name: 'Amazon PA API',
             color: '#FF9900',
