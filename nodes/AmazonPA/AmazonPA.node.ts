@@ -7,10 +7,6 @@ import {
 
 import * as amazonPaapi from 'amazon-paapi';
 
-function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 export class AmazonPA implements INodeType {
     description: INodeTypeDescription = {
         displayName: 'Amazon PA API Advanced',
@@ -87,30 +83,6 @@ export class AmazonPA implements INodeType {
                 default: '',
                 description: 'Keywords to search for items on Amazon',
             },
-
-            // Add SearchIndex definition here
-            {
-                displayName: 'Category (Search Index)',
-                name: 'searchIndex',
-                type: 'options',  // Change from 'multiOptions' to 'options'
-                options: [
-                    { name: 'All', value: 'All' },
-                    { name: 'Books', value: 'Books' },
-                    { name: 'Toys & Games', value: 'ToysAndGames' },
-                    { name: 'Electronics', value: 'Electronics' },
-                    { name: 'Health & Personal Care', value: 'HealthPersonalCare' },
-                    { name: 'Beauty', value: 'Beauty' },
-                    { name: 'Clothing & Accessories', value: 'Apparel' },
-                ],
-                displayOptions: {
-                    show: {
-                        operation: ['searchItems'],
-                    },
-                },
-                default: 'All',
-                description: 'Select a single category to refine your search (SearchIndex).',
-            },
-            
             {
                 displayName: 'Browse Node IDs (for Get Browse Nodes)',
                 name: 'browseNodeIds',
@@ -184,35 +156,9 @@ export class AmazonPA implements INodeType {
                     }
                 } else if (operation === 'searchItems') {
                     // Handling Search Items request
-                    //const keywords = this.getNodeParameter('keywords', i) as string;
-                    //requestParameters.Keywords = keywords;
-                    //responseData = await amazonPaapi.SearchItems(commonParameters, requestParameters);
-                    
-                    // Handling Search Items request
                     const keywords = this.getNodeParameter('keywords', i) as string;
-                    const searchIndex = this.getNodeParameter('searchIndex', i, 'All') as string; // Single selection
-                    
-                    const requestParameters: any = {
-                        Keywords: keywords,
-                    };
-                    
-                    // Only include SearchIndex if it's not "All"
-                    if (searchIndex !== 'All') {
-                        requestParameters.SearchIndex = searchIndex;
-                    }
-                    
-                    const responseData = await amazonPaapi.SearchItems(commonParameters, requestParameters);
-                    
-                    if (responseData?.body?.SearchResult?.Items) {
-                        returnData.push({ json: { results: responseData.body.SearchResult.Items } });
-                    } else {
-                        returnData.push({ json: { results: [] } });
-                    }
-                
-                
-                
-                
-                
+                    requestParameters.Keywords = keywords;
+                    responseData = await amazonPaapi.SearchItems(commonParameters, requestParameters);
                 } else if (operation === 'getBrowseNodes') {
                     // Handling Get Browse Nodes request
                     const browseNodeIds = this.getNodeParameter('browseNodeIds', i) as string | null;
