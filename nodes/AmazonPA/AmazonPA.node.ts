@@ -201,18 +201,13 @@ export class AmazonPA implements INodeType {
                         requestParameters.SearchIndex = searchIndex;
                     }
                     
-                    try {
-                        const responseData = await amazonPaapi.SearchItems(commonParameters, requestParameters);
+                    const responseData = await amazonPaapi.SearchItems(commonParameters, requestParameters);
                     
-                        if (responseData?.body?.SearchResult?.Items) {
-                            returnData.push({ json: { results: responseData.body.SearchResult.Items } });
-                        } else {
-                            returnData.push({ json: { results: [] } });
-                        }
-                    } catch (error) {
-                        throw new Error(`Failed to execute Amazon PA API operation: ${error.message}`);
+                    if (responseData?.body?.SearchResult?.Items) {
+                        returnData.push({ json: { results: responseData.body.SearchResult.Items } });
+                    } else {
+                        returnData.push({ json: { results: [] } });
                     }
-
                 
                 
                 
