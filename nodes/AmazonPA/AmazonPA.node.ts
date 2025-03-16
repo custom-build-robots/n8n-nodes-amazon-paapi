@@ -90,10 +90,11 @@ export class AmazonPA implements INodeType {
 
             // Add SearchIndex definition here
             {
-                displayName: 'Categories (Search Index)',
+                displayName: 'Category (Search Index)',
                 name: 'searchIndex',
-                type: 'multiOptions',  // Allows selecting multiple categories
+                type: 'options',  // Change from 'multiOptions' to 'options'
                 options: [
+                    { name: 'All', value: 'All' },
                     { name: 'Books', value: 'Books' },
                     { name: 'Toys & Games', value: 'ToysAndGames' },
                     { name: 'Electronics', value: 'Electronics' },
@@ -106,8 +107,8 @@ export class AmazonPA implements INodeType {
                         operation: ['searchItems'],
                     },
                 },
-                default: [],
-                description: 'Select one or more categories for product search.',
+                default: 'All',
+                description: 'Select a single category to refine your search (SearchIndex).',
             },
             
             {
@@ -189,32 +190,28 @@ export class AmazonPA implements INodeType {
                     
                     // Handling Search Items request
                     const keywords = this.getNodeParameter('keywords', i) as string;
-                    const searchIndexes = this.getNodeParameter('searchIndex', i, []) as string[]; // Multi-option array
-                    let allResults: any[] = [];
-                
-                    for (const searchIndex of searchIndexes) {
-                        const requestParameters: any = {
-                            Keywords: keywords,
-                            SearchIndex: searchIndex,
-                        };
-                
-                        console.log(`Requesting category: ${searchIndex}`);
-                
-                        try {
-                            const responseData = await amazonPaapi.SearchItems(commonParameters, requestParameters);
-                
-                            if (responseData?.body?.SearchResult?.Items) {
-                                allResults = allResults.concat(responseData.body.SearchResult.Items);
-                            }
-                        } catch (error) {
-                            console.error(`Error searching category "${searchIndex}":`, error);
-                        }
-                
-                        // **Prevent API throttling by adding a delay**
-                        await sleep(1000); // Wait 1 second before making the next request
+                    const searchIndex = this.getNodeParameter('searchIndex', i, 'All') as string; // Single selection
+                    
+                    const requestParameters: any = {
+                        Keywords: keywords,
+                    };
+                    
+                    // Only include SearchIndex if it's not "All"
+                    if (searchIndex !== 'All') {
+                        requestParameters.SearchIndex = searchIndex;
                     }
-                
-                    returnData.push({ json: { results: allResults } });
+                    
+                    try {
+                        const responseData = await amazonPaapi.SearchItems(commonParameters, requestParameters);
+                    
+                        if (responseData?.body?.SearchResult?.Items) {
+                            returnData.push({ json: { results: responseData.body.SearchResult.Items } });
+                        } else {
+                            returnData.push({ json: { results: [] } });
+                        }
+                    } catch (error) {
+                        throw new Error(`Failed to execute Amazon PA API operation: ${error.message}`);
+                    }
 
                 
                 
